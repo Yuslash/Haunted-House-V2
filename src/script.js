@@ -321,6 +321,24 @@ world.allowSleep = true
 world.addContactMaterial(defaultContactMaterial)
 world.defaultContactMaterial = defaultContactMaterial
 
+/**
+ * sounds
+ */
+const hitSounds = new Audio('/sounds/hit.mp3')
+const playHitSounds = (collision) =>{
+
+    const impactSounds = collision.contact.getImpactVelocityAlongNormal()
+
+    if(impactSounds > 2)
+    {
+
+    hitSounds.volume = 0.1 + Math.random() * 0.4
+     hitSounds.currentTime = 0
+     hitSounds.play()
+
+    }
+}
+
 //floor
 const cannonfloor = new CANNON.Plane()
 const body = new CANNON.Body({
@@ -395,6 +413,7 @@ const createSphere = (radius, position) =>{
     body.position.copy(position)
 
     // console.log(body.position)
+    body.addEventListener('collide', playHitSounds)
 
     world.addBody(body)
 
@@ -403,8 +422,8 @@ const createSphere = (radius, position) =>{
 }
 createSphere(0.5, { x: 3, y: 5, z: 4 })
 createSphere(0.5, { x: 4, y: 3, z: 5 })
-createSphere(0.5, { x: 5, y: 7, z: 4 })
-createSphere(0.5, { x: 2, y: 4, z: 3 })
+// createSphere(0.5, { x: 5, y: 7, z: 4 })
+// createSphere(0.5, { x: 2, y: 4, z: 3 })
 
 
 
@@ -436,6 +455,7 @@ const createBox = (width, height, depth, boxposition) => {
     body.position.copy(boxposition)
 
     // console.log(body.position)
+    body.addEventListener('collide',playHitSounds)
 
     world.addBody(body)
 
